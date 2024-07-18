@@ -1,0 +1,109 @@
+definitions:
+  dto.CreateUserParam:
+    properties:
+      password:
+        example: "123"
+        type: string
+      user_id:
+        example: tester
+        type: string
+      user_name:
+        example: 테스터
+        type: string
+    required:
+    - password
+    - user_id
+    - user_name
+    type: object
+  dto.ReadUserInfo:
+    properties:
+      user_name:
+        example: 테스터
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /:
+    post:
+      consumes:
+      - application/json
+      description: 유저 생성
+      parameters:
+      - description: New User Info
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateUserParam'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "409":
+          description: Conflict
+          schema:
+            type: string
+        "422":
+          description: Unprocessable Entity
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create User
+      tags:
+      - User
+  /info/{user_key}:
+    get:
+      description: 유저 정보를 조회합니다.
+      parameters:
+      - description: user key
+        in: path
+        name: user_key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ReadUserInfo'
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "403":
+          description: Forbidden
+          schema:
+            type: string
+        "422":
+          description: Unprocessable Entity
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Read User Info
+      tags:
+      - User
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
