@@ -40,7 +40,7 @@ func (uc *Usecase) MongoDBTransactionHandler(param interface{}) *util.Error {
 	callback := func(sessionContext mongoDB.SessionContext) (interface{}, error) {
 
 		switch param := param.(type) {
-		case *dto.CreateUser:
+		case *dto.CreateUserInView:
 			return nil, uc.mongo.CreateUser(param)
 		default:
 			return nil, fmt.Errorf("not found param %s", param)
@@ -48,8 +48,10 @@ func (uc *Usecase) MongoDBTransactionHandler(param interface{}) *util.Error {
 	}
 
 	options := uc.mongo.TransactionOption()
-	_, err = session.WithTransaction(context.Background(), callback, options)
-	return util.DefaultErrorHandle(err)
+	if _, err := session.WithTransaction(context.Background(), callback, options); err != nil {
+		return util.DefaultErrorHandle(err)
+	}
+	return nil
 }
 
 func (uc *Usecase) MariaDBTransactionHandler(iparam interface{}) *util.Error {

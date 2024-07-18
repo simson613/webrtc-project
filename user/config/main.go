@@ -4,12 +4,14 @@ type ConfigInterface interface {
 	MariaDB() MariaDBInterface
 	MongoDB() MongoDBInterface
 	Server() ServerInterface
+	Swagger() SwaggerInterface
 }
 
 type Config struct {
 	mariaDB MariaDBInterface
 	mongoDB MongoDBInterface
 	server  ServerInterface
+	swagger SwaggerInterface
 }
 
 func InitConfig() ConfigInterface {
@@ -17,6 +19,7 @@ func InitConfig() ConfigInterface {
 		mariaDB: initMariaDBConfig(),
 		mongoDB: initMongoDBConfig(),
 		server:  initServerConfig(),
+		swagger: initSwaggerConfig(),
 	}
 }
 
@@ -30,4 +33,8 @@ func (config *Config) MongoDB() MongoDBInterface {
 
 func (config *Config) Server() ServerInterface {
 	return config.server
+}
+
+func (config *Config) Swagger() SwaggerInterface {
+	return config.swagger
 }

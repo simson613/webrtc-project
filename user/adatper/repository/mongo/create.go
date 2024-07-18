@@ -5,7 +5,7 @@ import (
 	"github/simson613/webrtc-project/user/dto"
 )
 
-func (m *mongoDB) CreateUser(user *dto.CreateUser) error {
+func (m *mongoDB) CreateUser(user *dto.CreateUserInView) error {
 	collection := m.db.Collection("users")
 
 	_, err := collection.InsertOne(context.TODO(), &user)

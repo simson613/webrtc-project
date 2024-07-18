@@ -15,11 +15,16 @@ func (uc *Usecase) CreateUser(param *dto.CreateUserParam) *util.Error {
 		Name:      param.Name,
 		CreatedAt: time.Now(),
 	}
-	if utilErr := uc.MariaDBTransactionHandler(userParam); utilErr != nil {
+	if utilErr := uc.MariaDBTransactionHandler(&userParam); utilErr != nil {
 		return utilErr
 	}
 
-	if utilErr := uc.MongoDBTransactionHandler(userParam); utilErr != nil {
+	viewParam := dto.CreateUserInView{
+		Key:  userParam.Key,
+		Id:   userParam.Id,
+		Name: userParam.Name,
+	}
+	if utilErr := uc.MongoDBTransactionHandler(&viewParam); utilErr != nil {
 		//delete user
 		return utilErr
 	}

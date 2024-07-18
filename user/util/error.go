@@ -11,7 +11,8 @@ type Error struct {
 }
 
 func ErrorHandle(code int, err error) *Error {
-	fmt.Printf("%+v", err)
+	fmt.Printf("error! --> %+v", err)
+	fmt.Println()
 	return &Error{
 		Code:  code,
 		Error: err,
@@ -19,15 +20,10 @@ func ErrorHandle(code int, err error) *Error {
 }
 
 func DefaultErrorHandle(err error) *Error {
-	fmt.Printf("%+v", err)
+	fmt.Printf("error! --> %+v", err)
+	fmt.Println()
 	return &Error{
 		Code:  http.StatusInternalServerError,
 		Error: err,
 	}
 }
-
-// func ErrorMessage(err error, msg string) error {
-// 	fmt.Printf("%+v", err)
-// 	errWrap := errors.Wrap(err, msg)
-// 	return errWrap
-// }

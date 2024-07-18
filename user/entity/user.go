@@ -7,7 +7,7 @@ import (
 )
 
 type User struct {
-	Key       string         `gorm:"primary_key; type:varchar(32);"`
+	Key       string         `gorm:"primary_key; type:varchar(36);"`
 	Id        string         `gorm:"uniqueIndex:idx_user_id; type:varchar(16); not null;"`
 	Name      string         `gorm:"uniqueIndex:idx_user_name; type:varchar(10); not null;"`
 	CreatedAt time.Time      `gorm:"default: current_timestamp; not null"`

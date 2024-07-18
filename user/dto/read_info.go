@@ -5,6 +5,5 @@ type ReadUserInfoParam struct {
 }
 
 type ReadUserInfo struct {
-	Name      string `bson:"user_name"`
-	CreatedAt string `bson:"registration_date"`
+	Name string `json:"user_name" bson:"user_name" example:"테스터"`
 }

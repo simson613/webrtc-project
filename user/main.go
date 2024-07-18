@@ -5,6 +5,7 @@ import (
 	"github/simson613/webrtc-project/user/adatper/repository/maria"
 	"github/simson613/webrtc-project/user/adatper/repository/mongo"
 	"github/simson613/webrtc-project/user/config"
+	"github/simson613/webrtc-project/user/docs"
 	"github/simson613/webrtc-project/user/usecase"
 	"log"
 
@@ -29,12 +30,16 @@ func main() {
 	ctl := controller.InitController(usecase)
 	ctl.Routing(router)
 
-	// docs.SwaggerInfo.Title = "wlm screen api"
-	// docs.SwaggerInfo.Description = "This docs for screen rest api using gin-swagger"
-	// docs.SwaggerInfo.Version = "1.0"
-	// docs.SwaggerInfo.BasePath = "/user"
-
+	initSwagger(config.Swagger())
 	router.GET("swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
 		ginSwagger.DefaultModelsExpandDepth(-1)))
 	log.Fatal(router.Run(":" + config.Server().Port()))
+}
+
+func initSwagger(config config.SwaggerInterface) {
+	docs.SwaggerInfo.Title = "user service api"
+	docs.SwaggerInfo.Description = "This docs for user api using gin-swagger"
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.BasePath = config.Path()
+
 }

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"github/simson613/webrtc-project/user/dto"
 	"net/http"
 
@@ -19,13 +20,14 @@ import (
 // @Failure 403 {string} authorization error
 // @Failure 422 {string} input param error
 // @Failure 500 {string} internal servier error
-// @Router /info/:user_key [get]
+// @Router /info/{user_key} [get]
 func (ctl *Controller) ReadUserInfo(c *gin.Context) {
 	req := dto.ReadUserInfoParam{}
 	if err := c.ShouldBindUri(&req); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, "")
 		return
 	}
+	fmt.Println("req", req)
 
 	userInfo, utilErr := ctl.uc.ReadUserInfo(&req)
 	if utilErr != nil {

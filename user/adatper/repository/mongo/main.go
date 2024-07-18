@@ -17,7 +17,7 @@ type MongoDBInterface interface {
 	StartTransaction() (mongo.Session, error)
 	TransactionOption() *options.TransactionOptions
 
-	CreateUser(*dto.CreateUser) error
+	CreateUser(*dto.CreateUserInView) error
 	ReadUserInfo(*dto.ReadUserInfoParam) (*dto.ReadUserInfo, error)
 }
 
