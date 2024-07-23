@@ -1,6 +1,7 @@
 package config
 
 type ConfigInterface interface {
+	Kafka() KafkaInterface
 	MariaDB() MariaDBInterface
 	MongoDB() MongoDBInterface
 	Server() ServerInterface
@@ -8,6 +9,7 @@ type ConfigInterface interface {
 }
 
 type Config struct {
+	kafka   KafkaInterface
 	mariaDB MariaDBInterface
 	mongoDB MongoDBInterface
 	server  ServerInterface
@@ -16,11 +18,16 @@ type Config struct {
 
 func InitConfig() ConfigInterface {
 	return &Config{
+		kafka:   initKafkaConfig(),
 		mariaDB: initMariaDBConfig(),
 		mongoDB: initMongoDBConfig(),
 		server:  initServerConfig(),
 		swagger: initSwaggerConfig(),
 	}
+}
+
+func (config *Config) Kafka() KafkaInterface {
+	return config.kafka
 }
 
 func (config *Config) MariaDB() MariaDBInterface {

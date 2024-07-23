@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"fmt"
+	"github/simson613/webrtc-project/user/adatper/event/producer"
 	"github/simson613/webrtc-project/user/adatper/repository/maria"
 	"github/simson613/webrtc-project/user/adatper/repository/mongo"
 	"github/simson613/webrtc-project/user/config"
@@ -15,18 +16,21 @@ import (
 )
 
 type Usecase struct {
-	config config.ConfigInterface
-	maria  maria.MariaDBInterface
-	mongo  mongo.MongoDBInterface
+	config   config.ConfigInterface
+	maria    maria.MariaDBInterface
+	mongo    mongo.MongoDBInterface
+	producer producer.ProducerInterface
 }
 
 func InitUsecase(config config.ConfigInterface,
 	maria maria.MariaDBInterface,
-	mongo mongo.MongoDBInterface) *Usecase {
+	mongo mongo.MongoDBInterface,
+	producer producer.ProducerInterface) *Usecase {
 	return &Usecase{
-		config: config,
-		maria:  maria,
-		mongo:  mongo,
+		config:   config,
+		maria:    maria,
+		mongo:    mongo,
+		producer: producer,
 	}
 }
 

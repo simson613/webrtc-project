@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func (uc *Usecase) CreateUser(param *dto.CreateUserParam) *util.Error {
@@ -25,8 +26,24 @@ func (uc *Usecase) CreateUser(param *dto.CreateUserParam) *util.Error {
 		Name: userParam.Name,
 	}
 	if utilErr := uc.MongoDBTransactionHandler(&viewParam); utilErr != nil {
-		//delete user
+		//delete user in maria
 		return utilErr
 	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(param.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return util.DefaultErrorHandle(err)
+	}
+	publishParam := dto.PublishCreateUser{
+		Key:      userParam.Key,
+		Id:       param.Id,
+		Name:     param.Name,
+		Password: string(hashedPassword),
+	}
+	if err := uc.producer.CreateUser(&publishParam); err != nil {
+		//delete user in maria and mongo
+		return util.DefaultErrorHandle(err)
+	}
+
 	return nil
 }

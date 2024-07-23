@@ -20,3 +20,10 @@ type CreateUserInView struct {
 	Id   string `bson:"user_id"`
 	Name string `bson:"user_name"`
 }
+
+type PublishCreateUser struct {
+	Key      string `json:"user_key"`
+	Id       string `json:"user_id"`
+	Name     string `json:"user_name"`
+	Password string `json:"password"`
+}

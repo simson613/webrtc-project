@@ -2,6 +2,7 @@ package main
 
 import (
 	"github/simson613/webrtc-project/user/adatper/controller"
+	"github/simson613/webrtc-project/user/adatper/event/producer"
 	"github/simson613/webrtc-project/user/adatper/repository/maria"
 	"github/simson613/webrtc-project/user/adatper/repository/mongo"
 	"github/simson613/webrtc-project/user/config"
@@ -26,7 +27,8 @@ func main() {
 
 	mariaDB := maria.InitMariaDB(config.MariaDB())
 	mongoDB := mongo.InitMongoDB(config.MongoDB())
-	usecase := usecase.InitUsecase(config, mariaDB, mongoDB)
+	producer := producer.InitProducer(config)
+	usecase := usecase.InitUsecase(config, mariaDB, mongoDB, producer)
 	ctl := controller.InitController(usecase)
 	ctl.Routing(router)
 
