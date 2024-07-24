@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go/v4"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type CreateLoginTokenParam struct {
@@ -30,4 +31,8 @@ type LoginAccessToken struct {
 type LoginRefreshToken struct {
 	Token      string    `bson:"token"`
 	Expiration time.Time `bson:"expiration"`
+}
+
+type DeleteTokenId struct {
+	Id primitive.ObjectID `bson:"_id"`
 }

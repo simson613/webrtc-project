@@ -5,9 +5,9 @@ import (
 	"github/simson613/webrtc-project/auth/dto"
 )
 
-func (m *mongoDB) CreateUser(user *dto.SubscribeCreateUser) error {
+func (m *mongoDB) CreateUser(
+	user *dto.SubscribeCreateUser) (interface{}, error) {
 	coll := m.db.Collection("users")
 
-	_, err := coll.InsertOne(context.TODO(), &user)
-	return err
+	return coll.InsertOne(context.TODO(), &user)
 }

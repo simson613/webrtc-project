@@ -19,8 +19,9 @@ type MongoDBInterface interface {
 
 	ReadUserById(*dto.ReadUserByIdParam) (*dto.ReadUserById, error)
 
-	CreateUser(*dto.SubscribeCreateUser) error
+	CreateUser(*dto.SubscribeCreateUser) (interface{}, error)
 	CreateLoginRefreshToken(*dto.LoginRefreshToken) (interface{}, error)
+	DeleteLoginRefreshToken(*dto.DeleteTokenId) (interface{}, error)
 }
 
 type mongoDB struct {

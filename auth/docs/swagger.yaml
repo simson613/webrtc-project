@@ -48,6 +48,29 @@ paths:
       summary: Login
       tags:
       - Authentication
+  /logout:
+    post:
+      consumes:
+      - application/json
+      description: 로그아웃
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "422":
+          description: Unprocessable Entity
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Logout
+      tags:
+      - Authentication
 securityDefinitions:
   ApiKeyAuth:
     in: header

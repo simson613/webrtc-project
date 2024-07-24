@@ -36,9 +36,11 @@ func (uc *Usecase) MongoDBTransactionHandler(param interface{}) (interface{}, *u
 
 		switch param := param.(type) {
 		case *dto.SubscribeCreateUser:
-			return nil, uc.mongo.CreateUser(param)
+			return uc.mongo.CreateUser(param)
 		case *dto.LoginRefreshToken:
 			return uc.mongo.CreateLoginRefreshToken(param)
+		case *dto.DeleteTokenId:
+			return uc.mongo.DeleteLoginRefreshToken(param)
 		default:
 			return nil, fmt.Errorf("not found param %s", param)
 		}
