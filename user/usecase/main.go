@@ -91,7 +91,7 @@ func (uc *Usecase) checkMysqlError(err error) int {
 
 func (uc *Usecase) checkMongoError(err error) int {
 	if err == mongoDB.ErrNoDocuments {
-		return http.StatusNoContent
+		return http.StatusNotFound
 	}
 	return http.StatusInternalServerError
 }

@@ -93,12 +93,6 @@ const docTemplate = `{
                             "$ref": "#/definitions/dto.ReadUserInfo"
                         }
                     },
-                    "204": {
-                        "description": "No Content",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
@@ -113,6 +107,12 @@ const docTemplate = `{
                     },
                     "403": {
                         "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "type": "string"
                         }
