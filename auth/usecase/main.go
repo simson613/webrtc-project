@@ -37,7 +37,7 @@ func (uc *Usecase) MongoDBTransactionHandler(param interface{}) (interface{}, *u
 		switch param := param.(type) {
 		case *dto.SubscribeCreateUser:
 			return uc.mongo.CreateUser(param)
-		case *dto.LoginRefreshToken:
+		case *dto.CreateLoginRefreshToken:
 			return uc.mongo.CreateLoginRefreshToken(param)
 		case *dto.DeleteTokenId:
 			return uc.mongo.DeleteLoginRefreshToken(param)

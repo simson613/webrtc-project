@@ -43,25 +43,25 @@ func (uc *Usecase) createLoginToken(
 }
 
 func (uc *Usecase) createAccessToken(
-	payload *dto.LoginTokenCliams) (*dto.LoginAccessToken, error) {
+	payload *dto.LoginTokenCliams) (*dto.CreateLoginAccessToken, error) {
 	now := time.Now()
 	expiration := uc.config.Auth().AccessExpiration()
 	expirationTime := now.Add(time.Minute * time.Duration(expiration))
 	payload.StandardClaims = jwt.StandardClaims{ExpiresAt: jwt.At(expirationTime)}
 
 	token, err := uc.createToken(payload)
-	return &dto.LoginAccessToken{Token: token}, err
+	return &dto.CreateLoginAccessToken{Token: token}, err
 }
 
 func (uc *Usecase) createRefreshToken(
-	payload *dto.LoginTokenCliams) (*dto.LoginRefreshToken, error) {
+	payload *dto.LoginTokenCliams) (*dto.CreateLoginRefreshToken, error) {
 	now := time.Now()
 	expiration := uc.config.Auth().RefreshExpiration()
 	expirationTime := now.Add(time.Hour * time.Duration(expiration))
 	payload.StandardClaims = jwt.StandardClaims{ExpiresAt: jwt.At(expirationTime)}
 
 	token, err := uc.createToken(payload)
-	return &dto.LoginRefreshToken{
+	return &dto.CreateLoginRefreshToken{
 		Token:      token,
 		Expiration: expirationTime,
 	}, err

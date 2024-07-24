@@ -22,8 +22,7 @@ func InitController(config config.ConfigInterface, uc *usecase.Usecase) *Control
 func (ctl *Controller) Routing(r *gin.Engine) {
 	r.POST("/login", ctl.Login)
 	r.POST("/logout", ctl.Logout)
-	// r.POST("/reissuance", ctl.Ressuance)
-	// r.PUT("/operator/password", util.OperatorTokenAuthMiddleware(operatorSecret), ctl.UpdateOperatorPasswordByNo)
+	r.POST("/reissuance", ctl.RessuanceLogin)
 }
 
 func (ctl *Controller) setCookie(c *gin.Context, value string) {

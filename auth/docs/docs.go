@@ -43,7 +43,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.LoginAccessToken"
+                            "$ref": "#/definitions/dto.CreateLoginAccessToken"
                         }
                     },
                     "404": {
@@ -101,10 +101,51 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/reissuance": {
+            "post": {
+                "description": "Login Access Token 재발급",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Ressuance Login Access Token",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateLoginAccessToken"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "dto.LoginAccessToken": {
+        "dto.CreateLoginAccessToken": {
             "type": "object",
             "properties": {
                 "token": {

@@ -6,7 +6,7 @@ import (
 )
 
 func (m *mongoDB) CreateLoginRefreshToken(
-	refreshToken *dto.LoginRefreshToken) (interface{}, error) {
+	refreshToken *dto.CreateLoginRefreshToken) (interface{}, error) {
 	coll := m.db.Collection("user_refresh")
 
 	result, err := coll.InsertOne(context.TODO(), &refreshToken)

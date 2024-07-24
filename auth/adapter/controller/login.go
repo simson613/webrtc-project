@@ -13,7 +13,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param Auth body dto.LoginParam true "login param"
-// @Success 200 {object} dto.LoginAccessToken
+// @Success 200 {object} dto.CreateLoginAccessToken
 // @Failure 404 {string} not found error
 // @Failure 422 {string} input param error
 // @Failure 500 {string} internal servier error

@@ -1,5 +1,5 @@
 definitions:
-  dto.LoginAccessToken:
+  dto.CreateLoginAccessToken:
     properties:
       token:
         type: string
@@ -32,7 +32,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.LoginAccessToken'
+            $ref: '#/definitions/dto.CreateLoginAccessToken'
         "404":
           description: Not Found
           schema:
@@ -69,6 +69,33 @@ paths:
           schema:
             type: string
       summary: Logout
+      tags:
+      - Authentication
+  /reissuance:
+    post:
+      consumes:
+      - application/json
+      description: Login Access Token 재발급
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CreateLoginAccessToken'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "422":
+          description: Unprocessable Entity
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Ressuance Login Access Token
       tags:
       - Authentication
 securityDefinitions:

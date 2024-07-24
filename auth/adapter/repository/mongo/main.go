@@ -18,9 +18,10 @@ type MongoDBInterface interface {
 	TransactionOption() *options.TransactionOptions
 
 	ReadUserById(*dto.ReadUserByIdParam) (*dto.ReadUserById, error)
+	ReadLoginToken(*dto.ReadLoginTokenParam) (*dto.ReadLoginToken, error)
 
 	CreateUser(*dto.SubscribeCreateUser) (interface{}, error)
-	CreateLoginRefreshToken(*dto.LoginRefreshToken) (interface{}, error)
+	CreateLoginRefreshToken(*dto.CreateLoginRefreshToken) (interface{}, error)
 	DeleteLoginRefreshToken(*dto.DeleteTokenId) (interface{}, error)
 }
 
