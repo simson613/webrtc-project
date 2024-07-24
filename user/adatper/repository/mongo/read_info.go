@@ -10,11 +10,11 @@ import (
 
 func (m *mongoDB) ReadUserInfo(
 	condition *dto.ReadUserInfoParam) (*dto.ReadUserInfo, error) {
-	collection := m.db.Collection("users")
+	coll := m.db.Collection("users")
 
 	filter := bson.D{primitive.E{Key: "_id", Value: condition.Key}}
 	result := dto.ReadUserInfo{}
 
-	err := collection.FindOne(context.TODO(), filter).Decode(&result)
+	err := coll.FindOne(context.TODO(), filter).Decode(&result)
 	return &result, err
 }
