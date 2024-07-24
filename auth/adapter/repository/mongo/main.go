@@ -17,7 +17,10 @@ type MongoDBInterface interface {
 	StartTransaction() (mongo.Session, error)
 	TransactionOption() *options.TransactionOptions
 
+	ReadUserById(*dto.ReadUserByIdParam) (*dto.ReadUserById, error)
+
 	CreateUser(*dto.SubscribeCreateUser) error
+	CreateLoginRefreshToken(*dto.LoginRefreshToken) (interface{}, error)
 }
 
 type mongoDB struct {

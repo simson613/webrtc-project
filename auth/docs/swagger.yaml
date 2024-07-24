@@ -1,6 +1,53 @@
+definitions:
+  dto.LoginAccessToken:
+    properties:
+      token:
+        type: string
+    type: object
+  dto.LoginParam:
+    properties:
+      password:
+        type: string
+      user_id:
+        type: string
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 로그인
+      parameters:
+      - description: login param
+        in: body
+        name: Auth
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.LoginAccessToken'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "422":
+          description: Unprocessable Entity
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Login
+      tags:
+      - Authentication
 securityDefinitions:
   ApiKeyAuth:
     in: header

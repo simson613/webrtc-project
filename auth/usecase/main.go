@@ -25,10 +25,10 @@ func InitUsecase(config config.ConfigInterface,
 	}
 }
 
-func (uc *Usecase) MongoDBTransactionHandler(param interface{}) *util.Error {
+func (uc *Usecase) MongoDBTransactionHandler(param interface{}) (interface{}, *util.Error) {
 	session, err := uc.mongo.StartTransaction()
 	if err != nil {
-		return util.DefaultErrorHandle(err)
+		return nil, util.DefaultErrorHandle(err)
 	}
 	defer session.EndSession(context.Background())
 
@@ -37,16 +37,19 @@ func (uc *Usecase) MongoDBTransactionHandler(param interface{}) *util.Error {
 		switch param := param.(type) {
 		case *dto.SubscribeCreateUser:
 			return nil, uc.mongo.CreateUser(param)
+		case *dto.LoginRefreshToken:
+			return uc.mongo.CreateLoginRefreshToken(param)
 		default:
 			return nil, fmt.Errorf("not found param %s", param)
 		}
 	}
 
 	options := uc.mongo.TransactionOption()
-	if _, err := session.WithTransaction(context.Background(), callback, options); err != nil {
-		return util.DefaultErrorHandle(err)
+	result, err := session.WithTransaction(context.Background(), callback, options)
+	if err != nil {
+		return nil, util.ErrorHandle(uc.checkMongoError(err), err)
 	}
-	return nil
+	return result, nil
 }
 
 func (uc *Usecase) checkMongoError(err error) int {

@@ -26,7 +26,7 @@ func main() {
 
 	mongoDB := mongo.InitMongoDB(config.MongoDB())
 	usecase := usecase.InitUsecase(config, mongoDB)
-	ctl := controller.InitController(usecase)
+	ctl := controller.InitController(config, usecase)
 	ctl.Routing(router)
 
 	consumer := consumer.InitConsumer(config, usecase)

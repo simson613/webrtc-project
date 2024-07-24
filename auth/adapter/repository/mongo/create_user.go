@@ -6,8 +6,8 @@ import (
 )
 
 func (m *mongoDB) CreateUser(user *dto.SubscribeCreateUser) error {
-	collection := m.db.Collection("users")
+	coll := m.db.Collection("users")
 
-	_, err := collection.InsertOne(context.TODO(), &user)
+	_, err := coll.InsertOne(context.TODO(), &user)
 	return err
 }
