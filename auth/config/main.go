@@ -1,6 +1,8 @@
 package config
 
 type ConfigInterface interface {
+	Auth() AuthInterface
+	Cookie() CookieInterface
 	Kafka() KafkaInterface
 	MongoDB() MongoDBInterface
 	Server() ServerInterface
@@ -8,6 +10,8 @@ type ConfigInterface interface {
 }
 
 type Config struct {
+	auth    AuthInterface
+	cookie  CookieInterface
 	kafka   KafkaInterface
 	mongoDB MongoDBInterface
 	server  ServerInterface
@@ -16,11 +20,21 @@ type Config struct {
 
 func InitConfig() ConfigInterface {
 	return &Config{
+		auth:    initAuthConfig(),
+		cookie:  initCookieConfig(),
 		kafka:   initKafkaConfig(),
 		mongoDB: initMongoDBConfig(),
 		server:  initServerConfig(),
 		swagger: initSwaggerConfig(),
 	}
+}
+
+func (config *Config) Auth() AuthInterface {
+	return config.auth
+}
+
+func (config *Config) Cookie() CookieInterface {
+	return config.cookie
 }
 
 func (config *Config) Kafka() KafkaInterface {

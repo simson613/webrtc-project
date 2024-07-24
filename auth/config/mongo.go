@@ -36,7 +36,7 @@ func initMongoDBConfig() *MongoDB {
 
 	port := os.Getenv("MONGO_PORT")
 	if port == "" {
-		port = "27017"
+		port = "27018"
 	}
 
 	database := os.Getenv("MONGO_INITDB_DATABASE")
