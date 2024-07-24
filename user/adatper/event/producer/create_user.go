@@ -6,7 +6,7 @@ import (
 )
 
 func (p *producer) CreateUser(param *dto.PublishCreateUser) error {
-	var topic string = "test-topic"
+	var topic string = "create-user"
 
 	strMsg, err := json.Marshal(param)
 	if err != nil {
