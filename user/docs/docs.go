@@ -69,6 +69,11 @@ const docTemplate = `{
         },
         "/info/{user_key}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "유저 정보를 조회합니다.",
                 "produces": [
                     "application/json"

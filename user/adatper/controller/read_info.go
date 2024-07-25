@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Security ApiKeyAuth
 // @Summary Read User Info
 // @Description 유저 정보를 조회합니다.
 // @Tags User

@@ -98,6 +98,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Read User Info
       tags:
       - User
