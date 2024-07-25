@@ -1,0 +1,52 @@
+services: 
+  nginx:
+    image: nginx:stable-alpine3.19-slim
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    command: ['nginx', '-g', 'daemon off;']
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  user-maria:
+    image: mariadb:10.9.4
+    container_name: user-maria
+    restart: always
+    env_file: 
+      - ./user/user.env
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mariadb/user/data:/var/lib/mysql
+      - ../mariadb/user/conf.d:/etc/mysql/conf.d
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  user-mongo:
+    image: mongo:6.0.3
+    container_name: user-mongo
+    restart: always
+    env_file:
+      - ./user/user.env
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb/user/db:/data/db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  auth-mongo:
+    image: mongo:6.0.3
+    container_name: auth-mongo
+    restart: always
+    env_file:
+      - ./auth/auth.env
+    ports:
+      - 27018:27017
+    volumes:
+      - ./mongodb/auth/db:/data/db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
