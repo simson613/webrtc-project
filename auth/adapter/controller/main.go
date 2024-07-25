@@ -23,6 +23,7 @@ func (ctl *Controller) Routing(r *gin.Engine) {
 	r.POST("/login", ctl.Login)
 	r.POST("/logout", ctl.Logout)
 	r.POST("/reissuance", ctl.RessuanceLogin)
+	r.GET("/check/token", ctl.CheckLoginToken)
 }
 
 func (ctl *Controller) setCookie(c *gin.Context, value string) {

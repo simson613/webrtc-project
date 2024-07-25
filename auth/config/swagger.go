@@ -15,7 +15,7 @@ type Swagger struct {
 func initSwaggerConfig() *Swagger {
 	path := os.Getenv("SWAGGER_PATH")
 	if path == "" {
-		path = "/"
+		path = "/auth"
 	}
 
 	return &Swagger{
