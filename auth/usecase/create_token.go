@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"fmt"
 	"github/simson613/webrtc-project/auth/dto"
 	"github/simson613/webrtc-project/auth/util"
 	"time"
@@ -13,6 +12,7 @@ import (
 func (uc *Usecase) createLoginToken(
 	user *dto.CreateLoginTokenParam) (*dto.LoginToken, *util.Error) {
 	tokenCliam := dto.LoginTokenCliams{
+		Key:  user.Key,
 		Id:   user.Id,
 		Name: user.Name,
 	}
@@ -33,7 +33,6 @@ func (uc *Usecase) createLoginToken(
 	if utilErr != nil {
 		return nil, utilErr
 	}
-	fmt.Printf("Result %v\n", result)
 	refreshId := result.(primitive.ObjectID)
 
 	return &dto.LoginToken{

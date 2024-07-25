@@ -5,6 +5,7 @@ type ReadUserByIdParam struct {
 }
 
 type ReadUserById struct {
+	Key      string `bson:"_id"`
 	Name     string `bson:"user_name"`
 	Password string `bson:"password"`
 }

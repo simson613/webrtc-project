@@ -26,6 +26,7 @@ func (uc *Usecase) Login(
 
 	// 3. create token
 	createTokenParam := dto.CreateLoginTokenParam{
+		Key:  user.Key,
 		Id:   param.Id,
 		Name: user.Name,
 	}

@@ -7,9 +7,14 @@ definitions:
   dto.LoginParam:
     properties:
       password:
+        example: "123"
         type: string
       user_id:
+        example: tester123
         type: string
+    required:
+    - password
+    - user_id
     type: object
 info:
   contact: {}

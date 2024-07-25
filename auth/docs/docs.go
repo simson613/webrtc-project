@@ -155,12 +155,18 @@ const docTemplate = `{
         },
         "dto.LoginParam": {
             "type": "object",
+            "required": [
+                "password",
+                "user_id"
+            ],
             "properties": {
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "123"
                 },
                 "user_id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "tester123"
                 }
             }
         }

@@ -10,7 +10,7 @@ import (
 	"github.com/dgrijalva/jwt-go/v4"
 )
 
-func (uc Usecase) RessuanceLogin(
+func (uc *Usecase) RessuanceLogin(
 	param *dto.ReadLoginTokenParam) (*dto.LoginToken, *util.Error) {
 	// read refresh token in mongo
 	tokenInfo, utilErr := uc.readLoginToken(param)
@@ -29,6 +29,7 @@ func (uc Usecase) RessuanceLogin(
 
 	//create token
 	tokenParam := dto.CreateLoginTokenParam{
+		Key:  user.Key,
 		Id:   tokenInfo.Id,
 		Name: user.Name,
 	}

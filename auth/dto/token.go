@@ -7,12 +7,13 @@ import (
 )
 
 type CreateLoginTokenParam struct {
+	Key  string
 	Id   string
 	Name string
-	// Password string
 }
 
 type LoginTokenCliams struct {
+	Key  string `json:"user_key"`
 	Id   string `json:"user_id"`
 	Name string `json:"user_name"`
 	jwt.StandardClaims
