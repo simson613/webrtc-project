@@ -67,9 +67,9 @@ func (uc *Usecase) readLoginToken(
 	}
 
 	// extraction token info
-	operator := uc.extractionLoginToken(tokenInfo)
+	user := uc.extractionLoginToken(tokenInfo)
 
-	return operator, nil
+	return user, nil
 }
 
 func (uc *Usecase) loginTokenValidCheck(tokenString string) (*jwt.Token, error) {

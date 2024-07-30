@@ -23,7 +23,7 @@ func (c *Consumer) CreateUser() {
 	for _, partition := range partitionList {
 		pc, err := consumer.ConsumePartition(topic, partition, sarama.OffsetNewest)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("pc err %v\n", err)
 		}
 
 		go func() {

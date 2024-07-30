@@ -56,7 +56,7 @@ func (uc *Usecase) MongoDBTransactionHandler(param interface{}) (interface{}, *u
 
 func (uc *Usecase) checkMongoError(err error) int {
 	if err == mongoDB.ErrNoDocuments {
-		return http.StatusNoContent
+		return http.StatusNotFound
 	}
 	return http.StatusInternalServerError
 }
