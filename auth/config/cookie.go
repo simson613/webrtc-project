@@ -26,12 +26,6 @@ type Cookie struct {
 	expires  int
 }
 
-// COOKIE_NAME_USER=Refresh-User-local
-// COOKIE_DOMAIN=127.0.0.1
-// COOKIE_PATH=/
-// COOKIE_SECURE=false
-// COOKIE_HTTPONLY=true
-// COOKIE_EXPIRES=192
 func initCookieConfig() *Cookie {
 	name := os.Getenv("COOKIE_NAME")
 	if name == "" {
