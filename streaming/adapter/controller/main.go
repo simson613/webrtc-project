@@ -20,10 +20,16 @@ func InitController(uc *usecase.Usecase) *Controller {
 
 func (ctl *Controller) Routing(app *fiber.App) {
 	app.Get("/", ctl.HomeHandler)
-	app.Get("/stream/create", ctl.CreateStreamHandler)
-	app.Get("/stream/:uuid/:stream_id", ctl.StreamHandler)
-	app.Get("/stream/websocket/:stream_id/ws", websocket.New(ctl.StreamWebsocketHandler, websocket.Config{
+
+	app.Get("/room/create", ctl.RedirectCreateRoomHandler)
+	app.Get("/room/:user_id", ctl.CreateRoomHandler)
+	app.Get("/room/:user_id/:room_id/ws", websocket.New(ctl.RoomWebsocketHandler, websocket.Config{
 		HandshakeTimeout: 10 * time.Second,
 	}))
-	app.Get("/stream/:stream_id", ctl.ReadStreamHandler)
+
+	app.Get("/stream/:user_id/:stream_id", ctl.StreamHandler)
+	app.Get("/stream/:user_id/:stream_id/ws", websocket.New(ctl.StreamWebsocketHandler, websocket.Config{
+		HandshakeTimeout: 10 * time.Second,
+	}))
+
 }

@@ -24,7 +24,8 @@ func main() {
 	app.Use(cors.New())
 	app.Static("resources", "./static")
 
-	wrtc.Streams = make(map[string]*wrtc.Stream)
+	wrtc.Rooms = make(map[string]*wrtc.Room)
+	wrtc.Streams = make(map[string]*wrtc.Room)
 
 	uc := usecase.InitUsecase(config)
 	ctl := controller.InitController(uc)

@@ -1,0 +1,25 @@
+<section>
+	<div>
+		<h1 class="title">
+			스트리밍 서비스 
+		</h1>
+		<p class="subtitle">
+			링크를 공유하여 다른 사용자와 스트리밍하세요!
+		</p>
+	</div>
+
+	<div id="peers">
+		<div id="videos">
+			<div>
+				<video id="localVideo" autoplay muted></video>
+			</div>
+		</div>
+	</div>
+	<div>
+		<button id="copyStreamLink" onclick="copyToClipboard('{{ .StreamLink }}')">Stream Link</button>
+	</div>
+	<script>
+		let RoomWebsocketAddr = "{{.RoomWebsocketAddr}}"
+	</script>
+	<script src="/resources/js/room.js"></script>
+</section>

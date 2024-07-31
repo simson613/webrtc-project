@@ -2,7 +2,6 @@ package webrtc
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"sync"
 	"time"
@@ -13,8 +12,28 @@ import (
 )
 
 var (
-	StreamsLock sync.RWMutex
-	Streams     map[string]*Stream
+	RoomsLock sync.RWMutex
+	Rooms     map[string]*Room
+	Streams   map[string]*Room
+)
+
+var (
+	turnConfig = webrtc.Configuration{
+		ICETransportPolicy: webrtc.ICETransportPolicyRelay,
+		ICEServers: []webrtc.ICEServer{
+			{
+				URLs: []string{"stun:stun.3.139.32.107:3478"},
+			},
+			// {
+			// 	URLs: []string{"turn:turn.3.139.32.107:3478"},
+
+			// 	Username: "simson",
+
+			// 	Credential:     "simson",
+			// 	CredentialType: webrtc.ICECredentialTypePassword,
+			// },
+		},
+	}
 )
 
 // var (
@@ -29,7 +48,7 @@ var (
 // 	}
 // )
 
-type Stream struct {
+type Room struct {
 	Peers *Peers
 }
 
@@ -98,7 +117,6 @@ func (p *Peers) SignalPeerConnections() {
 		for i := range p.Connections {
 			if p.Connections[i].PeerConnection.ConnectionState() == webrtc.PeerConnectionStateClosed {
 				p.Connections = append(p.Connections[:i], p.Connections[i+1:]...)
-				log.Println("a", p.Connections)
 				return true
 			}
 
@@ -125,9 +143,7 @@ func (p *Peers) SignalPeerConnections() {
 				existingSenders[receiver.Track().ID()] = true
 			}
 
-			fmt.Println("TrackLocals", p.TrackLocals)
 			for trackID := range p.TrackLocals {
-				fmt.Println("trackId", trackID)
 				if _, ok := existingSenders[trackID]; !ok {
 					if _, err := p.Connections[i].PeerConnection.AddTrack(p.TrackLocals[trackID]); err != nil {
 						return true
