@@ -11,8 +11,13 @@ func (ctl *Controller) StreamHandler(c *fiber.Ctx) error {
 	userId := c.Params("user_id")
 	streamId := c.Params("stream_id")
 
+	ws := "ws"
+	if ctl.config.Server().Env() == "PROD" {
+		ws = "wss"
+	}
+
 	return c.Render("stream", fiber.Map{
-		"StreamWebsocketAddr": fmt.Sprintf("ws://%s/stream/%s/%s/ws", c.Hostname(), userId, streamId),
+		"StreamWebsocketAddr": fmt.Sprintf("%s://%s/stream/%s/%s/ws", ws, c.Hostname(), userId, streamId),
 	}, "layouts/main")
 }
 

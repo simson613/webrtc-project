@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github/simson613/webrtc-project/streaming/config"
 	"github/simson613/webrtc-project/streaming/usecase"
 	"time"
 
@@ -9,12 +10,15 @@ import (
 )
 
 type Controller struct {
-	uc *usecase.Usecase
+	config config.ConfigInterface
+	uc     *usecase.Usecase
 }
 
-func InitController(uc *usecase.Usecase) *Controller {
+func InitController(
+	config config.ConfigInterface, uc *usecase.Usecase) *Controller {
 	return &Controller{
-		uc: uc,
+		config: config,
+		uc:     uc,
 	}
 }
 

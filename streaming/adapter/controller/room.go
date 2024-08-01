@@ -21,9 +21,15 @@ func (ctl *Controller) RedirectCreateRoomHandler(c *fiber.Ctx) error {
 func (ctl *Controller) CreateRoomHandler(c *fiber.Ctx) error {
 	roomId, streamId := ctl.uc.CreateRoom()
 	userId := c.Params("user_id")
+	fmt.Println("CreateRoom")
+
+	ws := "ws"
+	if ctl.config.Server().Env() == "PROD" {
+		ws = "wss"
+	}
 
 	return c.Render("room", fiber.Map{
-		"RoomWebsocketAddr": fmt.Sprintf("ws://%s/room/%s/%s/ws", c.Hostname(), userId, roomId),
+		"RoomWebsocketAddr": fmt.Sprintf("%s://%s/room/%s/%s/ws", ws, c.Hostname(), userId, roomId),
 		"StreamLink":        fmt.Sprintf("%s://%s/stream/%s/%s", c.Protocol(), c.Hostname(), userId, streamId),
 	}, "layouts/main")
 }

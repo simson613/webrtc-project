@@ -22,31 +22,19 @@ var (
 		ICETransportPolicy: webrtc.ICETransportPolicyRelay,
 		ICEServers: []webrtc.ICEServer{
 			{
-				URLs: []string{"stun:stun.3.139.32.107:3478"},
+				URLs: []string{"stun:stun.webrtc-sim.kro.kr:3478"},
 			},
-			// {
-			// 	URLs: []string{"turn:turn.3.139.32.107:3478"},
+			{
+				URLs: []string{"turn:webrtc-sim.kro.kr:3478"},
 
-			// 	Username: "simson",
+				Username: "simson",
 
-			// 	Credential:     "simson",
-			// 	CredentialType: webrtc.ICECredentialTypePassword,
-			// },
+				Credential:     "simson",
+				CredentialType: webrtc.ICECredentialTypePassword,
+			},
 		},
 	}
 )
-
-// var (
-// 	turnConfig = webrtc.Configuration{
-// 		ICETransportPolicy: webrtc.ICETransportPolicyRelay,
-// 		ICEServers: []webrtc.ICEServer{
-// 			{
-
-// 				URLs: []string{"stun:stun.l.google.com:19302"},
-// 			},
-// 		},
-// 	}
-// )
 
 type Room struct {
 	Peers *Peers

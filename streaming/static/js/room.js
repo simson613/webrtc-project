@@ -43,27 +43,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function connect(stream) {
-	// let pc = new RTCPeerConnection({
-	// 	iceServers: [
-  //     {
-	// 			'urls': 'stun:stun.l.google.com:19302',
-	// 		}
-	// 	]
-	// })
-
 	let pc = new RTCPeerConnection({
 		iceServers: [
 			{
-				'urls': 'stun:stun.3.139.32.107:3478',
+				'urls': 'stun:stun.webrtc-sim.kro.kr:3478',
 			},
-			// {
-			// 	'urls': 'stun:stun.l.google.com:19302',
-			// },
-			// {
-			// 	'urls': 'turn:turn.3.139.32.107:3478',
-			// 	'username': 'simson',
-			// 	'credential': 'simson',
-			// }
+			{
+				'urls': 'turn:webrtc-sim.kro.kr:3478',
+				'username': 'simson',
+				'credential': 'simson',
+			}
 		]
 	})
 	

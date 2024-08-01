@@ -28,7 +28,7 @@ func main() {
 	wrtc.Streams = make(map[string]*wrtc.Room)
 
 	uc := usecase.InitUsecase(config)
-	ctl := controller.InitController(uc)
+	ctl := controller.InitController(config, uc)
 	ctl.Routing(app)
 
 	if err := app.Listen(fmt.Sprintf(":%s", config.Server().Port())); err != nil {
