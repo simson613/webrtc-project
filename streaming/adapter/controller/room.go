@@ -11,7 +11,6 @@ import (
 func (ctl *Controller) RedirectCreateRoomHandler(c *fiber.Ctx) error {
 	userId := c.GetReqHeaders()["X-User-Id"]
 	if len(userId) < 1 {
-		// userId = append(userId, "tester11")
 		return c.JSON(http.StatusUnauthorized, "")
 	}
 
@@ -21,7 +20,15 @@ func (ctl *Controller) RedirectCreateRoomHandler(c *fiber.Ctx) error {
 func (ctl *Controller) CreateRoomHandler(c *fiber.Ctx) error {
 	roomId, streamId := ctl.uc.CreateRoom()
 	userId := c.Params("user_id")
-	fmt.Println("CreateRoom")
+
+	xUserId := c.GetReqHeaders()["X-User-Id"]
+	if len(userId) < 1 {
+		return c.JSON(http.StatusUnauthorized, "")
+	}
+
+	if userId != xUserId[0] {
+		return c.JSON(http.StatusUnauthorized, "")
+	}
 
 	ws := "ws"
 	if ctl.config.Server().Env() == "PROD" {

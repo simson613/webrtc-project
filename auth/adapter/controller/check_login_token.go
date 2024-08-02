@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -9,14 +8,6 @@ import (
 )
 
 func (ctl *Controller) CheckLoginToken(c *gin.Context) {
-	uri := c.Request.Header.Get("Request-Uri")
-	fmt.Printf("uri --> %s\n", uri)
-
-	if strings.Contains(uri, "/swagger/") {
-		c.JSON(http.StatusOK, "")
-		return
-	}
-
 	strToken := ctl.tokenStringExtract(c)
 	if strToken == "" {
 		c.JSON(http.StatusUnprocessableEntity, "")
@@ -24,10 +15,14 @@ func (ctl *Controller) CheckLoginToken(c *gin.Context) {
 	}
 
 	//valid check
-	if utilErr := ctl.uc.CheckLoginToken(strToken); utilErr != nil {
+	userInfo, utilErr := ctl.uc.CheckLoginToken(strToken)
+	if utilErr != nil {
 		c.JSON(utilErr.Code, "")
 		return
 	}
+
+	//add header
+	c.Header("X-User-Id", userInfo.Id)
 
 	c.JSON(http.StatusOK, "")
 }
