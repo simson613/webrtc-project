@@ -7,6 +7,7 @@ import (
 	"github/simson613/webrtc-project/auth/dto"
 	"log"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readconcern"
@@ -35,6 +36,7 @@ func InitMongoDB(config config.MongoDBInterface) MongoDBInterface {
 	client := MongoDBConnection(config)
 	dbName := config.Database()
 	db := client.Database(dbName)
+	setUserTokenExpireIndex(db, config)
 
 	return &mongoDB{
 		client: client,
@@ -62,6 +64,22 @@ func MongoDBConnection(mongoDB config.MongoDBInterface) *mongo.Client {
 	}
 
 	return client
+}
+
+func setUserTokenExpireIndex(db *mongo.Database, config config.MongoDBInterface) {
+	userIndex := mongo.IndexModel{
+		Keys: bson.M{
+			"expiration": 1,
+		}, Options: options.Index().
+			SetName("user_token_expire").
+			SetExpireAfterSeconds(0),
+	}
+
+	collection := db.Collection("user_refresh")
+	index := collection.Indexes()
+	if _, err := index.CreateOne(context.TODO(), userIndex); err != nil {
+		log.Fatal("setUserTokenExpireIndex", err)
+	}
 }
 
 func (mongoDB *mongoDB) StartTransaction() (mongo.Session, error) {
