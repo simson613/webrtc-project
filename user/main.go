@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github/simson613/webrtc-project/user/adatper/controller"
-	"github/simson613/webrtc-project/user/adatper/event/producer"
-	"github/simson613/webrtc-project/user/adatper/repository/maria"
-	"github/simson613/webrtc-project/user/adatper/repository/mongo"
+	"github/simson613/webrtc-project/user/adapter/controller"
+	"github/simson613/webrtc-project/user/adapter/event/producer"
+	"github/simson613/webrtc-project/user/adapter/repository/maria"
+	"github/simson613/webrtc-project/user/adapter/repository/mongo"
 	"github/simson613/webrtc-project/user/config"
 	"github/simson613/webrtc-project/user/docs"
 	"github/simson613/webrtc-project/user/usecase"

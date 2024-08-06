@@ -3,9 +3,9 @@ package usecase
 import (
 	"context"
 	"fmt"
-	"github/simson613/webrtc-project/user/adatper/event/producer"
-	"github/simson613/webrtc-project/user/adatper/repository/maria"
-	"github/simson613/webrtc-project/user/adatper/repository/mongo"
+	"github/simson613/webrtc-project/user/adapter/event/producer"
+	"github/simson613/webrtc-project/user/adapter/repository/maria"
+	"github/simson613/webrtc-project/user/adapter/repository/mongo"
 	"github/simson613/webrtc-project/user/config"
 	"github/simson613/webrtc-project/user/dto"
 	"github/simson613/webrtc-project/user/util"
