@@ -55,45 +55,17 @@ function connect(stream) {
 			}
 		]
 	})
-	
+
 	console.log("pc --> ",pc);
-
-	pc.ontrack = function (event) {
-		if (event.track.kind === 'audio') {
-			return
-		}
-
-		col = document.createElement("div")
-		let el = document.createElement(event.track.kind)
-		el.srcObject = event.streams[0]
-		el.setAttribute("controls", "true")
-		el.setAttribute("autoplay", "true")
-		el.setAttribute("playsinline", "true")
-		col.appendChild(el)
-		document.getElementById('videos').appendChild(col)
-
-		event.track.onmute = function (event) {
-			el.play()
-		}
-
-		event.streams[0].onremovetrack = ({
-			track
-		}) => {
-			if (el.parentNode) {
-				el.parentNode.remove()
-			}
-		}
-	}
 
 	stream.getTracks().forEach(track => pc.addTrack(track, stream))
 
 	let ws = new WebSocket(RoomWebsocketAddr)
-	console.log("ws--->s",ws);
 	pc.onicecandidate = e => {
 		if (!e.candidate) {
 			return
 		}
-		console.log("cadidate");
+		console.log("oncadidate and send cadidate to signaling server");
 
 		ws.send(JSON.stringify({
 			event: 'candidate',
@@ -124,14 +96,17 @@ function connect(stream) {
 			return console.log('failed to parse msg')
 		}
 
-		console.log("onmessage --> ", msg.event);
+		console.log("receivce from signaling server --> ", msg.event);
 		switch (msg.event) {
 			case 'offer':
 				let offer = JSON.parse(msg.data)
 				if (!offer) {
 					return console.log('failed to parse answer')
 				}
-				console.log("offer --> ", offer);
+				console.log("setRemoteDescription offer");
+				console.log("create answer");
+				console.log("setLocalDescription answer");
+				console.log("send answer to signaling server");
 				pc.setRemoteDescription(offer)
 				pc.createAnswer().then(answer => {
 					pc.setLocalDescription(answer)
