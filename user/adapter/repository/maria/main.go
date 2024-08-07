@@ -3,8 +3,8 @@ package maria
 import (
 	"fmt"
 	"github/simson613/webrtc-project/user/config"
+	"github/simson613/webrtc-project/user/domain/entity"
 	"github/simson613/webrtc-project/user/dto"
-	"github/simson613/webrtc-project/user/entity"
 	"log"
 
 	"gorm.io/driver/mysql"

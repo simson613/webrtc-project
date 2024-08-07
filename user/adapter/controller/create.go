@@ -13,7 +13,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param User body dto.CreateUserParam true "New User Info"
-// @Success 201 {string} created user
+// @Success 202 {string} created user
 // @Failure 409 {string} duplication error
 // @Failure 422 {string} input param error
 // @Failure 500 {string} internal servier error
@@ -25,9 +25,9 @@ func (ctl *Controller) CreateUser(c *gin.Context) {
 		return
 	}
 
-	if utilErr := ctl.uc.CreateUser(&req); utilErr != nil {
+	if utilErr := ctl.command.CreateUser(&req); utilErr != nil {
 		c.JSON(utilErr.Code, "")
 		return
 	}
-	c.JSON(http.StatusCreated, "created user")
+	c.JSON(http.StatusAccepted, "created user")
 }

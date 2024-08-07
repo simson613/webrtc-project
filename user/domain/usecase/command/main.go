@@ -1,4 +1,4 @@
-package usecase
+package command
 
 import (
 	"context"
@@ -15,18 +15,18 @@ import (
 	mongoDB "go.mongodb.org/mongo-driver/mongo"
 )
 
-type Usecase struct {
+type Command struct {
 	config   config.ConfigInterface
 	maria    maria.MariaDBInterface
 	mongo    mongo.MongoDBInterface
 	producer producer.ProducerInterface
 }
 
-func InitUsecase(config config.ConfigInterface,
+func InitCommand(config config.ConfigInterface,
 	maria maria.MariaDBInterface,
 	mongo mongo.MongoDBInterface,
-	producer producer.ProducerInterface) *Usecase {
-	return &Usecase{
+	producer producer.ProducerInterface) *Command {
+	return &Command{
 		config:   config,
 		maria:    maria,
 		mongo:    mongo,
@@ -34,7 +34,7 @@ func InitUsecase(config config.ConfigInterface,
 	}
 }
 
-func (uc *Usecase) MongoDBTransactionHandler(param interface{}) *util.Error {
+func (uc *Command) MongoDBTransactionHandler(param interface{}) *util.Error {
 	session, err := uc.mongo.StartTransaction()
 	if err != nil {
 		return util.DefaultErrorHandle(err)
@@ -58,7 +58,7 @@ func (uc *Usecase) MongoDBTransactionHandler(param interface{}) *util.Error {
 	return nil
 }
 
-func (uc *Usecase) MariaDBTransactionHandler(iparam interface{}) *util.Error {
+func (uc *Command) MariaDBTransactionHandler(iparam interface{}) *util.Error {
 	var err error
 	t := uc.maria.StartTransaction()
 
@@ -78,7 +78,7 @@ func (uc *Usecase) MariaDBTransactionHandler(iparam interface{}) *util.Error {
 	return nil
 }
 
-func (uc *Usecase) checkMysqlError(err error) int {
+func (uc *Command) checkMysqlError(err error) int {
 	mysqlErr, ok := err.(*mysql.MySQLError)
 	if ok {
 		switch mysqlErr.Number {
@@ -89,7 +89,7 @@ func (uc *Usecase) checkMysqlError(err error) int {
 	return http.StatusInternalServerError
 }
 
-func (uc *Usecase) checkMongoError(err error) int {
+func (uc *Command) checkMongoError(err error) int {
 	if err == mongoDB.ErrNoDocuments {
 		return http.StatusNotFound
 	}

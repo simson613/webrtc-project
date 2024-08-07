@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"github/simson613/webrtc-project/user/dto"
 	"net/http"
 
@@ -28,9 +27,8 @@ func (ctl *Controller) ReadUserInfo(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, "")
 		return
 	}
-	fmt.Println("req", req)
 
-	userInfo, utilErr := ctl.uc.ReadUserInfo(&req)
+	userInfo, utilErr := ctl.query.ReadUserInfo(&req)
 	if utilErr != nil {
 		c.JSON(utilErr.Code, "")
 		return

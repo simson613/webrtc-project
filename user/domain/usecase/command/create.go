@@ -1,4 +1,4 @@
-package usecase
+package command
 
 import (
 	"github/simson613/webrtc-project/user/dto"
@@ -9,14 +9,14 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (uc *Usecase) CreateUser(param *dto.CreateUserParam) *util.Error {
+func (c *Command) CreateUser(param *dto.CreateUserParam) *util.Error {
 	userParam := dto.CreateUser{
 		Key:       uuid.NewString(),
 		Id:        param.Id,
 		Name:      param.Name,
 		CreatedAt: time.Now(),
 	}
-	if utilErr := uc.MariaDBTransactionHandler(&userParam); utilErr != nil {
+	if utilErr := c.MariaDBTransactionHandler(&userParam); utilErr != nil {
 		return utilErr
 	}
 
@@ -25,7 +25,7 @@ func (uc *Usecase) CreateUser(param *dto.CreateUserParam) *util.Error {
 		Id:   userParam.Id,
 		Name: userParam.Name,
 	}
-	if utilErr := uc.MongoDBTransactionHandler(&viewParam); utilErr != nil {
+	if utilErr := c.MongoDBTransactionHandler(&viewParam); utilErr != nil {
 		//delete user in maria
 		return utilErr
 	}
@@ -40,7 +40,7 @@ func (uc *Usecase) CreateUser(param *dto.CreateUserParam) *util.Error {
 		Name:     param.Name,
 		Password: string(hashedPassword),
 	}
-	if err := uc.producer.CreateUser(&publishParam); err != nil {
+	if err := c.producer.CreateUser(&publishParam); err != nil {
 		//delete user in maria and mongo
 		return util.DefaultErrorHandle(err)
 	}

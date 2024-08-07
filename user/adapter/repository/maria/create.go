@@ -1,8 +1,8 @@
 package maria
 
 import (
+	"github/simson613/webrtc-project/user/domain/entity"
 	"github/simson613/webrtc-project/user/dto"
-	"github/simson613/webrtc-project/user/entity"
 )
 
 func (m *mariaDB) CreateUser(user *dto.CreateUser) error {

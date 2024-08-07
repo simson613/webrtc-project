@@ -1,18 +1,23 @@
 package controller
 
 import (
-	"github/simson613/webrtc-project/user/usecase"
+	"github/simson613/webrtc-project/user/domain/usecase/command"
+	"github/simson613/webrtc-project/user/domain/usecase/query"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Controller struct {
-	uc *usecase.Usecase
+	command *command.Command
+	query   *query.Query
 }
 
-func InitController(uc *usecase.Usecase) *Controller {
+func InitController(
+	command *command.Command,
+	query *query.Query) *Controller {
 	return &Controller{
-		uc: uc,
+		command: command,
+		query:   query,
 	}
 }
 

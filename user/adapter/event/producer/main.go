@@ -24,11 +24,9 @@ func InitProducer(config config.ConfigInterface) ProducerInterface {
 
 func (p *producer) getProducer() sarama.AsyncProducer {
 	var config *sarama.Config = sarama.NewConfig()
-	// config.Producer.Return.Successes = true
-	// config.Producer.Return.Errors = true
-	config.Producer.RequiredAcks = sarama.WaitForAll
-	config.Producer.Retry.Max = 5
 	config.Producer.Return.Successes = true
+	config.Producer.Return.Errors = true
+	config.Producer.Retry.Max = 5
 
 	// config.Producer.RequiredAcks = sarama.WaitForLocal       // Only wait for the leader to ack
 	// config.Producer.Compression = sarama.CompressionSnappy   // Compress messages

@@ -7,7 +7,8 @@ import (
 	"github/simson613/webrtc-project/user/adapter/repository/mongo"
 	"github/simson613/webrtc-project/user/config"
 	"github/simson613/webrtc-project/user/docs"
-	"github/simson613/webrtc-project/user/usecase"
+	"github/simson613/webrtc-project/user/domain/usecase/command"
+	"github/simson613/webrtc-project/user/domain/usecase/query"
 	"log"
 
 	"github.com/gin-contrib/cors"
@@ -28,8 +29,10 @@ func main() {
 	mariaDB := maria.InitMariaDB(config.MariaDB())
 	mongoDB := mongo.InitMongoDB(config.MongoDB())
 	producer := producer.InitProducer(config)
-	usecase := usecase.InitUsecase(config, mariaDB, mongoDB, producer)
-	ctl := controller.InitController(usecase)
+	command := command.InitCommand(config, mariaDB, mongoDB, producer)
+	query := query.InitQuery(config, mongoDB)
+	// usecase := usecase.InitUsecase(config, mariaDB, mongoDB, producer)
+	ctl := controller.InitController(command, query)
 	ctl.Routing(router)
 
 	initSwagger(config.Swagger())
