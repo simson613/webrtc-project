@@ -31,7 +31,7 @@ func (ctl *Controller) Logout(c *gin.Context) {
 	}
 
 	refreshTokenId := dto.DeleteTokenId{Id: objectId}
-	if utilErr := ctl.uc.DeleteRefreshToken(&refreshTokenId); utilErr != nil {
+	if utilErr := ctl.command.DeleteRefreshToken(&refreshTokenId); utilErr != nil {
 		c.JSON(utilErr.Code, "")
 		return
 	}

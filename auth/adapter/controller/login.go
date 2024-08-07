@@ -25,7 +25,7 @@ func (ctl *Controller) Login(c *gin.Context) {
 		return
 	}
 
-	loginToken, utilErr := ctl.uc.Login(&req)
+	loginToken, utilErr := ctl.command.Login(&req)
 	if utilErr != nil {
 		c.JSON(utilErr.Code, "")
 		return

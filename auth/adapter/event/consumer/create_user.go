@@ -4,26 +4,35 @@ import (
 	"encoding/json"
 	"fmt"
 	"github/simson613/webrtc-project/auth/dto"
+	"log"
 
 	"github.com/IBM/sarama"
 )
 
 func (c *Consumer) CreateUser() {
 	topic := "create-user"
+
+	// consumerGroup, err := sarama.NewConsumerGroupFromClient(topic, *c.client)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// consumerGroup.
+
 	consumer, err := sarama.NewConsumerFromClient(*c.client)
 	if err != nil {
-		fmt.Printf("consumer err: %v", err)
+		log.Fatal(err)
 	}
 
 	partitionList, err := consumer.Partitions(topic)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 
 	for _, partition := range partitionList {
 		pc, err := consumer.ConsumePartition(topic, partition, sarama.OffsetNewest)
 		if err != nil {
-			fmt.Printf("pc err %v\n", err)
+			log.Fatal(err)
 		}
 
 		go func() {
@@ -35,13 +44,12 @@ func (c *Consumer) CreateUser() {
 					}
 				case message := <-pc.Messages():
 					if message != nil {
-
 						fmt.Printf("Get Message %s\n", string(message.Value))
 						msg := dto.SubscribeCreateUser{}
 						if err := json.Unmarshal(message.Value, &msg); err != nil {
 							fmt.Println(err)
 						}
-						c.uc.CreateUser(&msg)
+						c.command.CreateUser(&msg)
 					}
 				}
 			}

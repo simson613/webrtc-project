@@ -1,4 +1,4 @@
-package usecase
+package command
 
 import (
 	"context"
@@ -12,21 +12,21 @@ import (
 	mongoDB "go.mongodb.org/mongo-driver/mongo"
 )
 
-type Usecase struct {
+type Command struct {
 	config config.ConfigInterface
 	mongo  mongo.MongoDBInterface
 }
 
-func InitUsecase(config config.ConfigInterface,
-	mongo mongo.MongoDBInterface) *Usecase {
-	return &Usecase{
+func InitCommand(config config.ConfigInterface,
+	mongo mongo.MongoDBInterface) *Command {
+	return &Command{
 		config: config,
 		mongo:  mongo,
 	}
 }
 
-func (uc *Usecase) MongoDBTransactionHandler(param interface{}) (interface{}, *util.Error) {
-	session, err := uc.mongo.StartTransaction()
+func (c *Command) MongoDBTransactionHandler(param interface{}) (interface{}, *util.Error) {
+	session, err := c.mongo.StartTransaction()
 	if err != nil {
 		return nil, util.DefaultErrorHandle(err)
 	}
@@ -36,25 +36,25 @@ func (uc *Usecase) MongoDBTransactionHandler(param interface{}) (interface{}, *u
 
 		switch param := param.(type) {
 		case *dto.SubscribeCreateUser:
-			return uc.mongo.CreateUser(param)
+			return c.mongo.CreateUser(param)
 		case *dto.CreateLoginRefreshToken:
-			return uc.mongo.CreateLoginRefreshToken(param)
+			return c.mongo.CreateLoginRefreshToken(param)
 		case *dto.DeleteTokenId:
-			return uc.mongo.DeleteLoginRefreshToken(param)
+			return c.mongo.DeleteLoginRefreshToken(param)
 		default:
 			return nil, fmt.Errorf("not found param %s", param)
 		}
 	}
 
-	options := uc.mongo.TransactionOption()
+	options := c.mongo.TransactionOption()
 	result, err := session.WithTransaction(context.Background(), callback, options)
 	if err != nil {
-		return nil, util.ErrorHandle(uc.checkMongoError(err), err)
+		return nil, util.ErrorHandle(c.checkMongoError(err), err)
 	}
 	return result, nil
 }
 
-func (uc *Usecase) checkMongoError(err error) int {
+func (c *Command) checkMongoError(err error) int {
 	if err == mongoDB.ErrNoDocuments {
 		return http.StatusNotFound
 	}

@@ -32,7 +32,7 @@ func (ctl *Controller) RessuanceLogin(c *gin.Context) {
 	}
 
 	loginTokenParam := dto.ReadLoginTokenParam{Id: objectId}
-	loginToken, utilErr := ctl.uc.RessuanceLogin(&loginTokenParam)
+	loginToken, utilErr := ctl.command.RessuanceLogin(&loginTokenParam)
 	if utilErr != nil {
 		c.JSON(utilErr.Code, "")
 		return

@@ -15,7 +15,7 @@ func (ctl *Controller) CheckLoginToken(c *gin.Context) {
 	}
 
 	//valid check
-	userInfo, utilErr := ctl.uc.CheckLoginToken(strToken)
+	userInfo, utilErr := ctl.command.CheckLoginToken(strToken)
 	if utilErr != nil {
 		c.JSON(utilErr.Code, "")
 		return

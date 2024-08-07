@@ -1,4 +1,4 @@
-package usecase
+package command
 
 import (
 	"github/simson613/webrtc-project/auth/dto"
@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func (uc *Usecase) createLoginToken(
+func (uc *Command) createLoginToken(
 	user *dto.CreateLoginTokenParam) (*dto.LoginToken, *util.Error) {
 	tokenCliam := dto.LoginTokenCliams{
 		Key:  user.Key,
@@ -41,7 +41,7 @@ func (uc *Usecase) createLoginToken(
 	}, nil
 }
 
-func (uc *Usecase) createAccessToken(
+func (uc *Command) createAccessToken(
 	payload *dto.LoginTokenCliams) (*dto.CreateLoginAccessToken, error) {
 	now := time.Now()
 	expiration := uc.config.Auth().AccessExpiration()
@@ -52,7 +52,7 @@ func (uc *Usecase) createAccessToken(
 	return &dto.CreateLoginAccessToken{Token: token}, err
 }
 
-func (uc *Usecase) createRefreshToken(
+func (uc *Command) createRefreshToken(
 	payload *dto.LoginTokenCliams) (*dto.CreateLoginRefreshToken, error) {
 	now := time.Now()
 	expiration := uc.config.Auth().RefreshExpiration()
@@ -66,7 +66,7 @@ func (uc *Usecase) createRefreshToken(
 	}, err
 }
 
-func (uc *Usecase) createToken(payload *dto.LoginTokenCliams) (string, error) {
+func (uc *Command) createToken(payload *dto.LoginTokenCliams) (string, error) {
 	jwtKey := uc.config.Auth().TokenSecret()
 	tokenClaim := jwt.NewWithClaims(jwt.SigningMethodHS256, *payload)
 	token, err := tokenClaim.SignedString([]byte(jwtKey))

@@ -1,4 +1,4 @@
-package usecase
+package command
 
 import (
 	"fmt"
@@ -10,10 +10,10 @@ import (
 	"github.com/dgrijalva/jwt-go/v4"
 )
 
-func (uc *Usecase) RessuanceLogin(
+func (c *Command) RessuanceLogin(
 	param *dto.ReadLoginTokenParam) (*dto.LoginToken, *util.Error) {
 	// read refresh token in mongo
-	tokenInfo, utilErr := uc.readLoginToken(param)
+	tokenInfo, utilErr := c.readLoginToken(param)
 	if utilErr != nil {
 		return nil, utilErr
 	}
@@ -22,9 +22,9 @@ func (uc *Usecase) RessuanceLogin(
 	userParam := dto.ReadUserByIdParam{
 		Id: tokenInfo.Id,
 	}
-	user, err := uc.mongo.ReadUserById(&userParam)
+	user, err := c.mongo.ReadUserById(&userParam)
 	if err != nil {
-		return nil, util.ErrorHandle(uc.checkMongoError(err), err)
+		return nil, util.ErrorHandle(c.checkMongoError(err), err)
 	}
 
 	//create token
@@ -33,26 +33,26 @@ func (uc *Usecase) RessuanceLogin(
 		Id:   tokenInfo.Id,
 		Name: user.Name,
 	}
-	token, utilErr := uc.createLoginToken(&tokenParam)
+	token, utilErr := c.createLoginToken(&tokenParam)
 	if utilErr != nil {
 		return nil, utilErr
 	}
 
 	// delete before refresh token in mongo
 	deleteParam := dto.DeleteTokenId{Id: param.Id}
-	if utilErr := uc.DeleteRefreshToken(&deleteParam); utilErr != nil {
+	if utilErr := c.DeleteRefreshToken(&deleteParam); utilErr != nil {
 		return nil, utilErr
 	}
 
 	return token, nil
 }
 
-func (uc *Usecase) readLoginToken(
+func (c *Command) readLoginToken(
 	param *dto.ReadLoginTokenParam) (*dto.LoginTokenInfo, *util.Error) {
 	// read refresh token in mongo
-	refreshToken, err := uc.mongo.ReadLoginToken(param)
+	refreshToken, err := c.mongo.ReadLoginToken(param)
 	if err != nil {
-		return nil, util.ErrorHandle(uc.checkMongoError(err), err)
+		return nil, util.ErrorHandle(c.checkMongoError(err), err)
 	}
 
 	// check expiration
@@ -61,28 +61,28 @@ func (uc *Usecase) readLoginToken(
 	}
 
 	// check token valid
-	tokenInfo, err := uc.loginTokenValidCheck(refreshToken.Token)
+	tokenInfo, err := c.loginTokenValidCheck(refreshToken.Token)
 	if err != nil {
 		return nil, util.ErrorHandle(http.StatusUnauthorized, err)
 	}
 
 	// extraction token info
-	user := uc.extractionLoginToken(tokenInfo)
+	user := c.extractionLoginToken(tokenInfo)
 
 	return user, nil
 }
 
-func (uc *Usecase) loginTokenValidCheck(tokenString string) (*jwt.Token, error) {
+func (c *Command) loginTokenValidCheck(tokenString string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return []byte(uc.config.Auth().TokenSecret()), nil
+		return []byte(c.config.Auth().TokenSecret()), nil
 	})
 	return token, err
 }
 
-func (uc *Usecase) extractionLoginToken(
+func (c *Command) extractionLoginToken(
 	token *jwt.Token) *dto.LoginTokenInfo {
 	claims := token.Claims.(jwt.MapClaims)
 	userId := claims["user_id"].(string)

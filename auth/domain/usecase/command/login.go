@@ -1,4 +1,4 @@
-package usecase
+package command
 
 import (
 	"github/simson613/webrtc-project/auth/dto"
@@ -8,7 +8,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (uc *Usecase) Login(
+func (uc *Command) Login(
 	param *dto.LoginParam) (*dto.LoginToken, *util.Error) {
 	// 1. read user by id
 	userParam := dto.ReadUserByIdParam{
@@ -34,6 +34,6 @@ func (uc *Usecase) Login(
 	return uc.createLoginToken(&createTokenParam)
 }
 
-func (uc *Usecase) compareHashedPassword(pwd1 string, pwd2 string) error {
+func (uc *Command) compareHashedPassword(pwd1 string, pwd2 string) error {
 	return bcrypt.CompareHashAndPassword([]byte(pwd1), []byte(pwd2))
 }

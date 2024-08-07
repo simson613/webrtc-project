@@ -6,7 +6,7 @@ import (
 	"github/simson613/webrtc-project/auth/adapter/repository/mongo"
 	"github/simson613/webrtc-project/auth/config"
 	"github/simson613/webrtc-project/auth/docs"
-	"github/simson613/webrtc-project/auth/usecase"
+	"github/simson613/webrtc-project/auth/domain/usecase/command"
 	"log"
 
 	"github.com/gin-contrib/cors"
@@ -25,11 +25,11 @@ func main() {
 	router.Use(cors.Default())
 
 	mongoDB := mongo.InitMongoDB(config.MongoDB())
-	usecase := usecase.InitUsecase(config, mongoDB)
-	ctl := controller.InitController(config, usecase)
+	command := command.InitCommand(config, mongoDB)
+	ctl := controller.InitController(config, command)
 	ctl.Routing(router)
 
-	consumer := consumer.InitConsumer(config, usecase)
+	consumer := consumer.InitConsumer(config, command)
 	consumer.Listener()
 
 	initSwagger(config.Swagger())
