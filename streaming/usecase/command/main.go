@@ -1,13 +1,13 @@
-package usecase
+package command
 
 import "github/simson613/webrtc-project/streaming/config"
 
-type Usecase struct {
+type Command struct {
 	config config.ConfigInterface
 }
 
-func InitUsecase(config config.ConfigInterface) *Usecase {
-	return &Usecase{
+func InitCommand(config config.ConfigInterface) *Command {
+	return &Command{
 		config: config,
 	}
 }

@@ -24,5 +24,5 @@ func (ctl *Controller) StreamHandler(c *fiber.Ctx) error {
 func (ctl *Controller) StreamWebsocketHandler(conn *websocket.Conn) {
 	streamId := conn.Params("stream_id")
 	fmt.Println("socket streamId", streamId)
-	ctl.uc.StreamWebsocket(conn, streamId)
+	ctl.command.StreamWebsocket(conn, streamId)
 }

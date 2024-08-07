@@ -1,4 +1,4 @@
-package usecase
+package command
 
 import (
 	"crypto/sha256"
@@ -10,7 +10,7 @@ import (
 	"github.com/pion/webrtc/v3"
 )
 
-func (uc *Usecase) CreateRoom() (string, string) {
+func (c *Command) CreateRoom() (string, string) {
 	roomId := uuid.NewString()
 
 	h := sha256.New()
@@ -29,7 +29,7 @@ func (uc *Usecase) CreateRoom() (string, string) {
 	return roomId, streamId
 }
 
-func (uc *Usecase) RoomWebsocket(conn *websocket.Conn, roomId string) {
+func (c *Command) RoomWebsocket(conn *websocket.Conn, roomId string) {
 	wrtc.RoomsLock.Lock()
 	if room, ok := wrtc.Rooms[roomId]; ok {
 		wrtc.RoomsLock.Unlock()

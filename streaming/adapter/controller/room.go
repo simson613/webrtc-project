@@ -18,7 +18,7 @@ func (ctl *Controller) RedirectCreateRoomHandler(c *fiber.Ctx) error {
 }
 
 func (ctl *Controller) CreateRoomHandler(c *fiber.Ctx) error {
-	roomId, streamId := ctl.uc.CreateRoom()
+	roomId, streamId := ctl.command.CreateRoom()
 	userId := c.Params("user_id")
 
 	xUserId := c.GetReqHeaders()["X-User-Id"]
@@ -43,5 +43,5 @@ func (ctl *Controller) CreateRoomHandler(c *fiber.Ctx) error {
 
 func (ctl *Controller) RoomWebsocketHandler(conn *websocket.Conn) {
 	roomId := conn.Params("room_id")
-	ctl.uc.RoomWebsocket(conn, roomId)
+	ctl.command.RoomWebsocket(conn, roomId)
 }

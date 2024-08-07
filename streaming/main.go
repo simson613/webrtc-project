@@ -5,7 +5,7 @@ import (
 	"github/simson613/webrtc-project/streaming/adapter/controller"
 	"github/simson613/webrtc-project/streaming/config"
 	wrtc "github/simson613/webrtc-project/streaming/pkg/webrtc"
-	"github/simson613/webrtc-project/streaming/usecase"
+	"github/simson613/webrtc-project/streaming/usecase/command"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -18,7 +18,7 @@ func main() {
 	config := config.InitConfig()
 
 	app := fiber.New(fiber.Config{
-		Views: html.New("./adapter/view", ".html")},
+		Views: html.New("./view", ".html")},
 	)
 	app.Use(logger.New())
 	app.Use(cors.New())
@@ -27,8 +27,8 @@ func main() {
 	wrtc.Rooms = make(map[string]*wrtc.Room)
 	wrtc.Streams = make(map[string]*wrtc.Room)
 
-	uc := usecase.InitUsecase(config)
-	ctl := controller.InitController(config, uc)
+	command := command.InitCommand(config)
+	ctl := controller.InitController(config, command)
 	ctl.Routing(app)
 
 	if err := app.Listen(fmt.Sprintf(":%s", config.Server().Port())); err != nil {

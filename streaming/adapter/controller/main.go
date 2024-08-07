@@ -2,7 +2,7 @@ package controller
 
 import (
 	"github/simson613/webrtc-project/streaming/config"
-	"github/simson613/webrtc-project/streaming/usecase"
+	"github/simson613/webrtc-project/streaming/usecase/command"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -10,15 +10,15 @@ import (
 )
 
 type Controller struct {
-	config config.ConfigInterface
-	uc     *usecase.Usecase
+	config  config.ConfigInterface
+	command *command.Command
 }
 
 func InitController(
-	config config.ConfigInterface, uc *usecase.Usecase) *Controller {
+	config config.ConfigInterface, command *command.Command) *Controller {
 	return &Controller{
-		config: config,
-		uc:     uc,
+		config:  config,
+		command: command,
 	}
 }
 
